@@ -7,11 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0d1b2a;--navy2:#162236;--navy3:#1e3050;
-  --gold:#c9a84c;--gold2:#e8c97a;--gold-dim:rgba(201,168,76,0.12);
-  --text:#e8e4dc;--text2:#a89f8e;--text3:#6e6555;
-  --danger:#e05252;--success:#4caf82;--warn:#e0a040;
-  --border:rgba(201,168,76,0.22);--border2:rgba(201,168,76,0.08);
+  --navy:#f0f2f5;--navy2:#ffffff;--navy3:#f7f8fa;
+  --gold:#2563eb;--gold2:#1d4ed8;--gold-dim:rgba(37,99,235,0.08);
+  --text:#1a2332;--text2:#4b5e7a;--text3:#8fa0b8;
+  --danger:#dc2626;--success:#16a34a;--warn:#d97706;
+  --border:rgba(37,99,235,0.18);--border2:rgba(0,0,0,0.07);
   --sw:248px;--r:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -25,21 +25,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 .nl{font-size:10px;color:var(--text3);letter-spacing:1.4px;text-transform:uppercase;padding:0 8px;margin-bottom:5px}
 .ni{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);cursor:pointer;color:var(--text2);font-size:13px;font-weight:400;transition:all .15s;margin-bottom:2px;border:1px solid transparent}
 .ni:hover{background:var(--gold-dim);color:var(--text)}
-.ni.active{background:var(--gold-dim);color:var(--gold);border-color:var(--border);font-weight:500}
+.ni.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(37,99,235,.3);font-weight:500}
 .ni .ico{font-size:14px;width:18px;text-align:center;flex-shrink:0}
 .sfooter{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border2)}
 .sfooter p{font-size:10.5px;color:var(--text3);text-align:center;line-height:1.6;margin-bottom:6px}
 
 #main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
 #topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:13px 26px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
-#topbar h2{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold2);font-weight:600;flex:1}
+#topbar h2{font-family:'Playfair Display',serif;font-size:19px;color:var(--text);font-weight:600;flex:1}
 .sbox{display:flex;align-items:center;background:var(--navy3);border:1px solid var(--border);border-radius:6px;padding:7px 11px;gap:7px}
 .sbox input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:200px;font-family:inherit}
 .sbox input::placeholder{color:var(--text3)}
 #content{padding:26px;flex:1}
 
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;font-weight:500;border:none;transition:all .15s;text-decoration:none}
-.btn-gold{background:var(--gold);color:var(--navy)}.btn-gold:hover{background:var(--gold2)}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold2)}
 .btn-out{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-out:hover{color:var(--text);border-color:var(--gold);background:var(--gold-dim)}
 .btn-del{background:rgba(224,82,82,.12);color:var(--danger);border:1px solid rgba(224,82,82,.3)}.btn-del:hover{background:rgba(224,82,82,.22)}
 .btn-ok{background:rgba(76,175,130,.12);color:var(--success);border:1px solid rgba(76,175,130,.3)}.btn-ok:hover{background:rgba(76,175,130,.22)}
@@ -58,7 +58,7 @@ table{width:100%;border-collapse:collapse}
 thead th{background:var(--navy3);padding:9px 14px;text-align:left;font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--text3);font-weight:500}
 td{padding:11px 14px;border-bottom:1px solid var(--border2);font-size:13px;color:var(--text);vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(201,168,76,.03)}
+tr:hover td{background:rgba(37,99,235,.03)}
 .tda{display:flex;gap:5px}
 
 .bx{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
@@ -83,7 +83,7 @@ tr:hover td{background:rgba(201,168,76,.03)}
 .mo.open{display:flex}
 .mb{background:var(--navy2);border:1px solid var(--border);border-radius:12px;width:100%;max-width:600px;max-height:92vh;overflow-y:auto}
 .mh{padding:18px 22px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px}
-.mh h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold2);flex:1}
+.mh h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);flex:1}
 .mh .xb{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:2px 6px;border-radius:4px}
 .mh .xb:hover{color:var(--text);background:var(--gold-dim)}
 .mbd{padding:22px}
@@ -101,7 +101,7 @@ tr:hover td{background:rgba(201,168,76,.03)}
 
 .dr{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
 .db{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:18px}
-.db h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--text);margin-bottom:12px}
+.db h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--text);margin-bottom:12px;border-bottom:1px solid var(--border2);padding-bottom:10px}
 .pi2{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border2)}
 .pi2:last-child{border-bottom:none}
 .pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
@@ -113,17 +113,17 @@ tr:hover td{background:rgba(201,168,76,.03)}
 .fi2 .fv{font-size:13px;font-weight:500}
 
 #toast-box{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:7px}
-.tst{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-size:13px;color:var(--text);min-width:230px;animation:tin .2s ease;display:flex;align-items:center;gap:8px}
+.tst{background:#fff;border:1px solid var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1);border-radius:8px;padding:11px 15px;font-size:13px;color:var(--text);min-width:230px;animation:tin .2s ease;display:flex;align-items:center;gap:8px}
 .tst.ok{border-color:rgba(76,175,130,.5)}.tst.err{border-color:rgba(224,82,82,.5)}.tst.info{border-color:rgba(76,143,224,.4)}
 @keyframes tin{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-#setup{position:fixed;inset:0;background:var(--navy);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+#setup{position:fixed;inset:0;background:#e8ecf2;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
 .setup-box{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:34px;width:100%;max-width:530px;max-height:92vh;overflow-y:auto}
 .setup-box h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);margin-bottom:6px}
 .setup-box .intro{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7}
-.step-card{background:var(--navy3);border-radius:8px;padding:13px;margin-bottom:10px;font-size:12.5px;color:var(--text2);line-height:1.75;border-left:3px solid var(--border)}
-.step-card strong{color:var(--gold2)}
-.step-card code{background:rgba(201,168,76,.12);color:var(--gold2);padding:1px 5px;border-radius:3px;font-size:11.5px;font-family:monospace}
+.step-card{background:var(--navy3);border-radius:8px;padding:13px;margin-bottom:10px;font-size:12.5px;color:var(--text2);line-height:1.75;border-left:3px solid rgba(37,99,235,.4)}
+.step-card strong{color:var(--gold)}
+.step-card code{background:rgba(37,99,235,.1);color:var(--gold);padding:1px 5px;border-radius:3px;font-size:11.5px;font-family:monospace}
 .cfg-fields{display:flex;flex-direction:column;gap:9px;margin:16px 0}
 .cfg-fields input{background:var(--navy3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none}
 .cfg-fields input:focus{border-color:var(--gold)}
@@ -133,9 +133,9 @@ tr:hover td{background:rgba(201,168,76,.03)}
 .ag-cell{background:var(--navy3);border:1px solid var(--border2);border-radius:5px;min-height:72px;padding:5px;font-size:11px;color:var(--text3);cursor:pointer;transition:border .15s}
 .ag-cell:hover{border-color:var(--border)}
 .ag-cell .dn{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:3px}
-.ag-cell.today{border-color:var(--gold);background:var(--gold-dim)}.ag-cell.today .dn{color:var(--gold)}
+.ag-cell.today{border-color:var(--gold);background:rgba(37,99,235,.07)}.ag-cell.today .dn{color:var(--gold)}
 .ag-cell.om{opacity:.35}
-.ag-ev{background:var(--gold-dim);border-radius:3px;padding:2px 4px;font-size:10px;color:var(--gold2);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-ev{background:rgba(37,99,235,.1);border-radius:3px;padding:2px 4px;font-size:10px;color:#2563eb;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ag-ev.ep{background:rgba(224,82,82,.18);color:#f07070}
 .ag-ev.ea{background:rgba(224,160,64,.18);color:var(--warn)}
 .ag-ev.er{background:rgba(76,143,224,.18);color:#7ab8f5}
@@ -175,7 +175,7 @@ tr:hover td{background:rgba(201,168,76,.03)}
     ⚙ Configurações do projeto → aba "Geral" → "Seus apps" → ícone <strong>&lt;/&gt;</strong> → "Registrar app" → copie o bloco <code>const firebaseConfig = { … }</code> e cole abaixo.</div>
 
     <div style="margin:18px 0 6px;font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px">Cole o firebaseConfig aqui:</div>
-    <textarea id="cf-paste" rows="9" style="width:100%;background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--gold2);font-family:monospace;font-size:12.5px;outline:none;resize:vertical;line-height:1.6" placeholder="const firebaseConfig = {
+    <textarea id="cf-paste" rows="9" style="width:100%;background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:12px;color:#2563eb;font-family:monospace;font-size:12.5px;outline:none;resize:vertical;line-height:1.6" placeholder="const firebaseConfig = {
   apiKey: &quot;AIzaSy...&quot;,
   authDomain: &quot;meu-projeto.firebaseapp.com&quot;,
   projectId: &quot;meu-projeto-12345&quot;,
@@ -576,16 +576,22 @@ window.marcarPago=async function(id){ await updItem('financeiro',id,{status:'pag
 window.delFin=async function(id){ if(!confirm('Excluir lançamento?'))return; await delItem('financeiro',id); toast('Excluído','info'); renderFin(); };
 
 // ══ AGENDA ════════════════════════════════════════════════
+let _agEvts=[], _agPraz=[];
+
 async function renderAg(){
   $('content').innerHTML='<div class="ld">Carregando…</div>';
-  const [evts,praz]=await Promise.all([getAll('agenda'),getAll('prazos')]);
+  [_agEvts,_agPraz]=await Promise.all([getAll('agenda'),getAll('prazos')]);
+  buildCal();
+}
+
+function buildCal(){
   const yr=agMon.getFullYear(), mo=agMon.getMonth();
   const first=new Date(yr,mo,1), last=new Date(yr,mo+1,0);
   const dow=first.getDay();
   const hj=new Date(); hj.setHours(0,0,0,0);
   const eMap={};
-  evts.forEach(e=>{ if(!eMap[e.data])eMap[e.data]=[]; eMap[e.data].push({...e,_k:e.tipo||'evento'}); });
-  praz.filter(p=>p.status!=='concluido').forEach(p=>{ if(!eMap[p.data])eMap[p.data]=[]; eMap[p.data].push({...p,_k:'prazo'}); });
+  _agEvts.forEach(e=>{ if(!eMap[e.data])eMap[e.data]=[]; eMap[e.data].push({...e,_k:e.tipo||'evento',_src:'agenda'}); });
+  _agPraz.filter(p=>p.status!=='concluido').forEach(p=>{ if(!eMap[p.data])eMap[p.data]=[]; eMap[p.data].push({...p,_k:'prazo',_src:'prazos'}); });
   const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   let cells='';
@@ -596,9 +602,9 @@ async function renderAg(){
     const evs=eMap[dt]||[];
     const evHtml=evs.slice(0,3).map(e=>{
       const cls=e._k==='prazo'?'ep':e._k==='audiencia'?'ea':e._k==='reuniao'?'er':'';
-      return `<div class="ag-ev ${cls}" title="${esc(e.descricao||e.titulo)}">${esc((e.descricao||e.titulo||'').substring(0,20))}</div>`;
+      return `<div class="ag-ev ${cls}">${esc((e.descricao||e.titulo||'').substring(0,18))}</div>`;
     }).join('');
-    cells+=`<div class="ag-cell${isT?' today':''}" onclick="openAgModal(null,'${dt}')"><div class="dn">${d}</div>${evHtml}${evs.length>3?`<div style="font-size:9px;color:var(--text3)">+${evs.length-3}</div>`:''}</div>`;
+    cells+=`<div class="ag-cell${isT?' today':''}" onclick="openDayPanel('${dt}')"><div class="dn">${d}</div>${evHtml}${evs.length>3?`<div style="font-size:9px;color:var(--text3)">+${evs.length-3}</div>`:''}</div>`;
   }
   const rem=(7-(dow+last.getDate())%7)%7;
   for(let i=0;i<rem;i++) cells+=`<div class="ag-cell om"></div>`;
@@ -607,13 +613,58 @@ async function renderAg(){
     <button class="btn btn-out btn-sm" onclick="agNav(-1)">← Anterior</button>
     <h3>${meses[mo]} ${yr}</h3>
     <button class="btn btn-out btn-sm" onclick="agNav(1)">Próximo →</button>
-    <button class="btn btn-gold btn-sm" onclick="openAgModal()">+ Evento</button>
+    <button class="btn btn-gold btn-sm" onclick="openAgModal(null,null)">+ Evento</button>
   </div>
   <div class="wk">${dias.map(d=>`<span>${d}</span>`).join('')}</div>
   <div class="ag-grid">${cells}</div>`;
 }
 
 window.agNav=function(dir){ agMon.setMonth(agMon.getMonth()+dir); renderAg(); };
+
+// Painel do dia: lista eventos existentes + botão de novo
+window.openDayPanel=function(dt){
+  const eMap={};
+  _agEvts.forEach(e=>{ if(!eMap[e.data])eMap[e.data]=[]; eMap[e.data].push({...e,_src:'agenda'}); });
+  _agPraz.filter(p=>p.status!=='concluido').forEach(p=>{ if(!eMap[p.data])eMap[p.data]=[]; eMap[p.data].push({...p,_src:'prazos'}); });
+  const evs=eMap[dt]||[];
+  const [y,m,d]=dt.split('-');
+  const label=`${d}/${m}/${y}`;
+  const tipoLabels={reuniao:'Reunião',audiencia:'Audiência',pericia:'Perícia',evento:'Evento',prazo:'Prazo',tarefa:'Tarefa'};
+  const tipoColors={reuniao:'rgba(76,143,224,.15)',audiencia:'rgba(224,160,64,.15)',pericia:'rgba(160,120,200,.15)',prazo:'rgba(224,82,82,.15)',tarefa:'rgba(76,175,130,.15)',evento:'rgba(37,99,235,.1)'};
+  const tipoText={reuniao:'#4c8fe0',audiencia:'#d97706',pericia:'#a050d0',prazo:'#dc2626',tarefa:'#16a34a',evento:'#2563eb'};
+  const rows=evs.map(e=>{
+    const tipo=e._src==='prazos'?(e.tipo||'prazo'):(e.tipo||'evento');
+    const titulo=e.titulo||e.descricao||'—';
+    const hora=e.hora?` · ${e.hora}`:'';
+    const local=e.local?` · ${esc(e.local)}`:'';
+    const editBtn=e._src==='agenda'?`<button class="btn btn-out btn-sm" onclick="openAgModal('${e.id}',null)">✎ Editar</button>`:'<span style="font-size:11px;color:var(--text3)">prazo processual</span>';
+    return `<div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border2)">
+      <div style="width:36px;height:36px;border-radius:8px;background:${tipoColors[tipo]||'rgba(37,99,235,.1)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px">${tipo==='prazo'||tipo==='tarefa'?'◷':tipo==='audiencia'?'⚖':tipo==='reuniao'?'◎':'◉'}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13.5px;font-weight:500;color:var(--text)">${esc(titulo)}</div>
+        <div style="font-size:11.5px;color:var(--text3);margin-top:2px">
+          <span style="background:${tipoColors[tipo]||'rgba(37,99,235,.1)'};color:${tipoText[tipo]||'#2563eb'};padding:1px 7px;border-radius:10px;font-size:10.5px">${tipoLabels[tipo]||tipo}</span>${hora}${local}
+        </div>
+      </div>
+      <div>${editBtn}</div>
+    </div>`;
+  }).join('');
+
+  openModal(`
+  <div class="mh">
+    <h3>📅 ${label}</h3>
+    <button class="xb" onclick="closeModal()">×</button>
+  </div>
+  <div class="mbd">
+    ${evs.length===0
+      ? `<div style="text-align:center;padding:24px 0;color:var(--text3)">Nenhum compromisso nesta data.</div>`
+      : `<div style="margin-bottom:4px">${rows}</div>`
+    }
+    <div style="padding-top:14px;margin-top:${evs.length>0?'6':'0'}px">
+      <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="closeModal();openAgModal(null,'${dt}')">+ Agendar novo compromisso nesta data</button>
+    </div>
+  </div>`);
+};
 
 window.openAgModal=async function(id=null,dataPre=null){
   let e={tipo:'reuniao',data:dataPre||tod()}; if(id) e=await getOne('agenda',id)||e;
