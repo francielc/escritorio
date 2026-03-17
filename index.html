@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão Advocacia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b2a;--navy2:#162236;--navy3:#1e3050;
+  --gold:#c9a84c;--gold2:#e8c97a;--gold-dim:rgba(201,168,76,0.12);
+  --text:#e8e4dc;--text2:#a89f8e;--text3:#6e6555;
+  --danger:#e05252;--success:#4caf82;--warn:#e0a040;
+  --border:rgba(201,168,76,0.22);--border2:rgba(201,168,76,0.08);
+  --sw:248px;--r:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex;font-size:14px}
+
+#sidebar{width:var(--sw);min-height:100vh;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:10}
+.slg{padding:26px 20px 18px;border-bottom:1px solid var(--border2)}
+.slg h1{font-family:'Playfair Display',serif;font-size:16px;color:var(--gold);font-weight:700;line-height:1.4}
+.slg p{font-size:10px;color:var(--text3);margin-top:3px;letter-spacing:1.2px;text-transform:uppercase}
+.ng{padding:14px 10px 6px}
+.nl{font-size:10px;color:var(--text3);letter-spacing:1.4px;text-transform:uppercase;padding:0 8px;margin-bottom:5px}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);cursor:pointer;color:var(--text2);font-size:13px;font-weight:400;transition:all .15s;margin-bottom:2px;border:1px solid transparent}
+.ni:hover{background:var(--gold-dim);color:var(--text)}
+.ni.active{background:var(--gold-dim);color:var(--gold);border-color:var(--border);font-weight:500}
+.ni .ico{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.sfooter{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border2)}
+.sfooter p{font-size:10.5px;color:var(--text3);text-align:center;line-height:1.6;margin-bottom:6px}
+
+#main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
+#topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:13px 26px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:5}
+#topbar h2{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold2);font-weight:600;flex:1}
+.sbox{display:flex;align-items:center;background:var(--navy3);border:1px solid var(--border);border-radius:6px;padding:7px 11px;gap:7px}
+.sbox input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:200px;font-family:inherit}
+.sbox input::placeholder{color:var(--text3)}
+#content{padding:26px;flex:1}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;font-weight:500;border:none;transition:all .15s;text-decoration:none}
+.btn-gold{background:var(--gold);color:var(--navy)}.btn-gold:hover{background:var(--gold2)}
+.btn-out{background:transparent;color:var(--text2);border:1px solid var(--border)}.btn-out:hover{color:var(--text);border-color:var(--gold);background:var(--gold-dim)}
+.btn-del{background:rgba(224,82,82,.12);color:var(--danger);border:1px solid rgba(224,82,82,.3)}.btn-del:hover{background:rgba(224,82,82,.22)}
+.btn-ok{background:rgba(76,175,130,.12);color:var(--success);border:1px solid rgba(76,175,130,.3)}.btn-ok:hover{background:rgba(76,175,130,.22)}
+.btn-sm{padding:5px 9px;font-size:12px}
+
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:24px}
+.sc{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.sc .lb{font-size:10.5px;color:var(--text3);letter-spacing:.9px;text-transform:uppercase;margin-bottom:7px}
+.sc .vl{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold);font-weight:600}
+.sc .sb{font-size:11.5px;color:var(--text2);margin-top:3px}
+
+.tc{background:var(--navy2);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.th{padding:14px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.th h3{font-family:'Playfair Display',serif;font-size:15px;color:var(--text);flex:1}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--navy3);padding:9px 14px;text-align:left;font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--text3);font-weight:500}
+td{padding:11px 14px;border-bottom:1px solid var(--border2);font-size:13px;color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(201,168,76,.03)}
+.tda{display:flex;gap:5px}
+
+.bx{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+.b-ativo{background:rgba(76,175,130,.14);color:#4caf82}
+.b-inativo{background:rgba(110,101,85,.28);color:var(--text2)}
+.b-andamento{background:rgba(76,143,224,.15);color:#7ab8f5}
+.b-concluido{background:rgba(76,175,130,.14);color:#4caf82}
+.b-arquivado{background:rgba(110,101,85,.28);color:var(--text2)}
+.b-pendente{background:rgba(224,160,64,.14);color:var(--warn)}
+.b-pago{background:rgba(76,175,130,.14);color:#4caf82}
+.b-aberto{background:rgba(224,160,64,.14);color:var(--warn)}
+.b-vencido{background:rgba(224,82,82,.14);color:var(--danger)}
+.b-civel{background:rgba(76,143,224,.13);color:#7ab8f5}
+.b-criminal{background:rgba(224,82,82,.13);color:var(--danger)}
+.b-trabalhista{background:rgba(224,160,64,.13);color:var(--warn)}
+.b-previdenciario{background:rgba(76,175,130,.13);color:#4caf82}
+.b-administrativo{background:rgba(201,168,76,.13);color:var(--gold2)}
+.b-tributario{background:rgba(160,120,200,.2);color:#c07ef5}
+.b-consumidor{background:rgba(76,143,224,.13);color:#7ab8f5}
+
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.mo.open{display:flex}
+.mb{background:var(--navy2);border:1px solid var(--border);border-radius:12px;width:100%;max-width:600px;max-height:92vh;overflow-y:auto}
+.mh{padding:18px 22px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px}
+.mh h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold2);flex:1}
+.mh .xb{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:2px 6px;border-radius:4px}
+.mh .xb:hover{color:var(--text);background:var(--gold-dim)}
+.mbd{padding:22px}
+.mf{padding:14px 22px;border-top:1px solid var(--border2);display:flex;gap:8px;justify-content:flex-end}
+
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.fr.one{grid-template-columns:1fr}
+.fr.tri{grid-template-columns:1fr 1fr 1fr}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:11px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{background:var(--navy3);border:1px solid var(--border);border-radius:6px;padding:9px 11px;color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold)}
+.fg textarea{resize:vertical;min-height:75px}
+.fg select option{background:var(--navy2)}
+
+.dr{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.db{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:18px}
+.db h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--text);margin-bottom:12px}
+.pi2{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border2)}
+.pi2:last-child{border-bottom:none}
+.pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.pi2 .pt{font-size:12.5px;color:var(--text);line-height:1.4}
+.pi2 .ps{font-size:11px;color:var(--text3);margin-top:2px}
+.fi2{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border2)}
+.fi2:last-child{border-bottom:none}
+.fi2 .fn{font-size:12.5px;color:var(--text)}
+.fi2 .fv{font-size:13px;font-weight:500}
+
+#toast-box{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:7px}
+.tst{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:11px 15px;font-size:13px;color:var(--text);min-width:230px;animation:tin .2s ease;display:flex;align-items:center;gap:8px}
+.tst.ok{border-color:rgba(76,175,130,.5)}.tst.err{border-color:rgba(224,82,82,.5)}.tst.info{border-color:rgba(76,143,224,.4)}
+@keyframes tin{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+#setup{position:fixed;inset:0;background:var(--navy);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.setup-box{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:34px;width:100%;max-width:530px;max-height:92vh;overflow-y:auto}
+.setup-box h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);margin-bottom:6px}
+.setup-box .intro{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7}
+.step-card{background:var(--navy3);border-radius:8px;padding:13px;margin-bottom:10px;font-size:12.5px;color:var(--text2);line-height:1.75;border-left:3px solid var(--border)}
+.step-card strong{color:var(--gold2)}
+.step-card code{background:rgba(201,168,76,.12);color:var(--gold2);padding:1px 5px;border-radius:3px;font-size:11.5px;font-family:monospace}
+.cfg-fields{display:flex;flex-direction:column;gap:9px;margin:16px 0}
+.cfg-fields input{background:var(--navy3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none}
+.cfg-fields input:focus{border-color:var(--gold)}
+.cfg-fields input::placeholder{color:var(--text3)}
+
+.ag-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px}
+.ag-cell{background:var(--navy3);border:1px solid var(--border2);border-radius:5px;min-height:72px;padding:5px;font-size:11px;color:var(--text3);cursor:pointer;transition:border .15s}
+.ag-cell:hover{border-color:var(--border)}
+.ag-cell .dn{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:3px}
+.ag-cell.today{border-color:var(--gold);background:var(--gold-dim)}.ag-cell.today .dn{color:var(--gold)}
+.ag-cell.om{opacity:.35}
+.ag-ev{background:var(--gold-dim);border-radius:3px;padding:2px 4px;font-size:10px;color:var(--gold2);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-ev.ep{background:rgba(224,82,82,.18);color:#f07070}
+.ag-ev.ea{background:rgba(224,160,64,.18);color:var(--warn)}
+.ag-ev.er{background:rgba(76,143,224,.18);color:#7ab8f5}
+.mnav{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.mnav h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);flex:1;text-align:center}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.wk span{text-align:center;font-size:10.5px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase}
+
+.empty{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty .ei{font-size:30px;margin-bottom:10px;opacity:.35}
+.ld{display:flex;align-items:center;justify-content:center;padding:60px;color:var(--text3);gap:10px;font-size:14px}
+.ts{color:var(--text2)}.tsm{font-size:12px}
+
+@media(max-width:900px){.sg{grid-template-columns:repeat(2,1fr)}.dr{grid-template-columns:1fr}.fr{grid-template-columns:1fr}.fr.tri{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- SETUP -->
+<div id="setup">
+  <div class="setup-box">
+    <h2>⚖ Gestão Advocacia</h2>
+    <p class="intro">Configure uma vez e acesse de qualquer computador. O banco de dados fica no seu Firebase Firestore (gratuito).</p>
+
+    <div class="step-card"><strong>1. Crie o projeto Firebase</strong><br>
+    Acesse <strong>console.firebase.google.com</strong> → "Adicionar projeto" → dê um nome → "Criar projeto".</div>
+
+    <div class="step-card"><strong>2. Ative o Firestore</strong><br>
+    Menu lateral → <strong>Build → Firestore Database</strong> → "Create database" → <strong>Production mode</strong> → região <code>southamerica-east1</code> → "Enable".</div>
+
+    <div class="step-card"><strong>3. Regras de segurança</strong><br>
+    Na aba "Rules" substitua tudo por:<br>
+    <code>rules_version='2'; service cloud.firestore { match /databases/{d}/documents { match /{col=**} { allow read, write: if true; } } }</code><br>
+    → "Publish".</div>
+
+    <div class="step-card"><strong>4. Obtenha as credenciais</strong><br>
+    ⚙ Configurações do projeto → aba "Geral" → "Seus apps" → ícone <strong>&lt;/&gt;</strong> → "Registrar app" → copie os valores do <code>firebaseConfig</code>.</div>
+
+    <div class="cfg-fields">
+      <input id="cf-key" placeholder="apiKey  — AIzaSy..." />
+      <input id="cf-dom" placeholder="authDomain  — meu-projeto.firebaseapp.com" />
+      <input id="cf-pid" placeholder="projectId  — meu-projeto-12345" />
+      <input id="cf-app" placeholder="appId  — 1:123456789:web:abc..." />
+    </div>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px 0;font-size:14px" onclick="saveConfig()">Conectar ao Firebase →</button>
+    <p style="text-align:center;margin-top:10px;font-size:11.5px;color:var(--text3)">Credenciais salvas localmente no navegador.</p>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar" style="display:none">
+  <div class="slg">
+    <h1>⚖ Gestão Advocacia</h1>
+    <p id="proj-id">Sistema Jurídico</p>
+  </div>
+  <div class="ng">
+    <div class="nl">Principal</div>
+    <div class="ni active" data-page="dashboard"><span class="ico">◈</span> Dashboard</div>
+    <div class="ni" data-page="clientes"><span class="ico">◉</span> Clientes</div>
+    <div class="ni" data-page="processos"><span class="ico">◎</span> Processos</div>
+  </div>
+  <div class="ng">
+    <div class="nl">Gestão</div>
+    <div class="ni" data-page="prazos"><span class="ico">◷</span> Prazos & Tarefas</div>
+    <div class="ni" data-page="financeiro"><span class="ico">◈</span> Financeiro</div>
+    <div class="ni" data-page="agenda"><span class="ico">◫</span> Agenda</div>
+  </div>
+  <div class="sfooter">
+    <p>🟢 Firebase conectado</p>
+    <button class="btn btn-out btn-sm" style="width:100%" onclick="resetConfig()">Trocar projeto</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main" style="display:none">
+  <div id="topbar">
+    <h2 id="ptitle">Dashboard</h2>
+    <div class="sbox"><span style="color:var(--text3);font-size:13px">⌕</span><input id="gsearch" placeholder="Buscar..." autocomplete="off"></div>
+    <button class="btn btn-gold" onclick="openNew()">+ Novo</button>
+  </div>
+  <div id="content"><div class="ld">Carregando…</div></div>
+</div>
+
+<div id="modal-ov" class="mo">
+  <div class="mb" id="modal-box"></div>
+</div>
+<div id="toast-box"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc as fbGetDoc }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+let DB;
+
+// ── CONFIG ───────────────────────────────────────────────
+function getCfg(){ try{ return JSON.parse(localStorage.getItem('adv_fb')); }catch{ return null; } }
+
+window.saveConfig = function(){
+  const cfg={ apiKey:$('cf-key').value.trim(), authDomain:$('cf-dom').value.trim(), projectId:$('cf-pid').value.trim(), appId:$('cf-app').value.trim() };
+  if(!cfg.apiKey||!cfg.projectId||!cfg.authDomain){ toast('Preencha pelo menos apiKey, authDomain e projectId','err'); return; }
+  localStorage.setItem('adv_fb', JSON.stringify(cfg));
+  location.reload();
+};
+window.resetConfig = function(){ if(confirm('Desconectar do Firebase?')){ localStorage.removeItem('adv_fb'); location.reload(); } };
+
+async function initFB(){
+  const cfg=getCfg(); if(!cfg) return false;
+  try{
+    const app=initializeApp(cfg);
+    DB=getFirestore(app);
+    $('proj-id').textContent=cfg.projectId;
+    return true;
+  }catch(e){ console.error(e); return false; }
+}
+
+// ── UTILS ────────────────────────────────────────────────
+const $=id=>document.getElementById(id);
+function fmt(n){ return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n||0); }
+function fmtD(s){ if(!s) return '—'; return new Date(s+'T00:00:00').toLocaleDateString('pt-BR'); }
+function tod(){ return new Date().toISOString().split('T')[0]; }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hl(s,q){
+  if(!q) return esc(s);
+  return esc(s).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'),
+    '<mark style="background:rgba(201,168,76,.3);border-radius:2px;padding:0 1px">$1</mark>');
+}
+
+function toast(msg, type='ok'){
+  const icons={ok:'✓',err:'✗',info:'ℹ'};
+  const el=document.createElement('div'); el.className=`tst ${type}`;
+  el.innerHTML=`<span>${icons[type]}</span> ${msg}`;
+  $('toast-box').appendChild(el); setTimeout(()=>el.remove(),3200);
+}
+
+window.closeModal=function(){ $('modal-ov').classList.remove('open'); };
+function openModal(html){ $('modal-box').innerHTML=html; $('modal-ov').classList.add('open'); }
+$('modal-ov').addEventListener('click',e=>{ if(e.target===$('modal-ov')) closeModal(); });
+
+// ── FIRESTORE ────────────────────────────────────────────
+async function getAll(col){ const s=await getDocs(collection(DB,col)); return s.docs.map(d=>({id:d.id,...d.data()})); }
+async function getOne(col,id){ const s=await fbGetDoc(doc(DB,col,id)); return s.exists()?{id:s.id,...s.data()}:null; }
+async function addItem(col,data){ return await addDoc(collection(DB,col),data); }
+async function updItem(col,id,data){ return await updateDoc(doc(DB,col,id),data); }
+async function delItem(col,id){ return await deleteDoc(doc(DB,col,id)); }
+
+// ── ROUTING ──────────────────────────────────────────────
+let page='dashboard', search='', agMon=new Date(); agMon.setDate(1);
+
+document.querySelectorAll('.ni').forEach(n=>n.addEventListener('click',()=>navigate(n.dataset.page)));
+$('gsearch').addEventListener('input',e=>{ search=e.target.value.toLowerCase(); render(); });
+
+function navigate(p){
+  page=p; search=''; $('gsearch').value='';
+  document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('active',n.dataset.page===p));
+  const t={dashboard:'Dashboard',clientes:'Clientes',processos:'Processos',prazos:'Prazos & Tarefas',financeiro:'Financeiro',agenda:'Agenda'};
+  $('ptitle').textContent=t[p]||p; render();
+}
+
+function render(){ ({dashboard:renderDash,clientes:renderCli,processos:renderProc,prazos:renderPrazos,financeiro:renderFin,agenda:renderAg})[page]?.(); }
+
+window.openNew=function(){ ({clientes:openCliModal,processos:openProcModal,prazos:openPrazoModal,financeiro:openFinModal,agenda:openAgModal})[page]?.(); };
+
+// ══ DASHBOARD ════════════════════════════════════════════
+async function renderDash(){
+  $('content').innerHTML='<div class="ld">Carregando…</div>';
+  const [cli,proc,praz,fin]=await Promise.all([getAll('clientes'),getAll('processos'),getAll('prazos'),getAll('financeiro')]);
+  const hj=new Date(); hj.setHours(0,0,0,0);
+  const cAt=cli.filter(c=>c.status==='ativo').length;
+  const pAt=proc.filter(p=>p.status==='andamento').length;
+  const pzP=praz.filter(p=>p.status!=='concluido');
+  const pzU=pzP.filter(p=>Math.ceil((new Date(p.data+'T00:00:00')-hj)/86400000)<=7).length;
+  const honPago=fin.filter(f=>f.status==='pago').reduce((s,f)=>s+(parseFloat(f.valor)||0),0);
+  const honTot=fin.reduce((s,f)=>s+(parseFloat(f.valor)||0),0);
+  const cMap={}; cli.forEach(c=>cMap[c.id]=c.nome);
+  const pMap={}; proc.forEach(p=>pMap[p.id]=p.numero||p.parte||`Proc.${p.id}`);
+  const prxP=pzP.map(p=>({...p,diff:Math.ceil((new Date(p.data+'T00:00:00')-hj)/86400000)})).sort((a,b)=>a.diff-b.diff).slice(0,6);
+  const ulF=[...fin].sort((a,b)=>(b._ts||0)-(a._ts||0)).slice(0,6);
+
+  $('content').innerHTML=`
+  <div class="sg">
+    <div class="sc"><div class="lb">Clientes Ativos</div><div class="vl">${cAt}</div><div class="sb">${cli.length} cadastrados</div></div>
+    <div class="sc"><div class="lb">Processos em Andamento</div><div class="vl">${pAt}</div><div class="sb">${proc.length} total</div></div>
+    <div class="sc"><div class="lb">Prazos Urgentes</div><div class="vl" style="color:${pzU>0?'var(--danger)':'var(--gold)'}">${pzU}</div><div class="sb">${pzP.length} pendentes</div></div>
+    <div class="sc"><div class="lb">Honorários Recebidos</div><div class="vl">${fmt(honPago)}</div><div class="sb">de ${fmt(honTot)}</div></div>
+  </div>
+  <div class="dr">
+    <div class="db"><h4>Próximos Prazos</h4>
+      ${prxP.length===0?'<p style="color:var(--text3);font-size:13px">Nenhum prazo pendente.</p>':
+      prxP.map(p=>{
+        const c=p.diff<0?'var(--danger)':p.diff<=3?'var(--warn)':p.diff<=7?'#7ab8f5':'var(--success)';
+        const l=p.diff<0?`Vencido ${Math.abs(p.diff)}d`:p.diff===0?'Hoje!':p.diff===1?'Amanhã':`${p.diff}d`;
+        return `<div class="pi2"><div class="pdot" style="background:${c}"></div><div><div class="pt">${esc(p.descricao)}</div><div class="ps">${pMap[p.processoId]||'Sem processo'} · <span style="color:${c}">${l}</span></div></div></div>`;
+      }).join('')}
+    </div>
+    <div class="db"><h4>Últimos Lançamentos</h4>
+      ${ulF.length===0?'<p style="color:var(--text3);font-size:13px">Nenhum lançamento.</p>':
+      ulF.map(f=>{
+        const cc=f.status==='pago'?'var(--success)':f.status==='vencido'?'var(--danger)':'var(--warn)';
+        return `<div class="fi2"><div class="fn">${esc(f.descricao)}<div class="tsm ts">${cMap[f.clienteId]||'—'}</div></div><div class="fv" style="color:${cc}">${fmt(f.valor)}</div></div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+// ══ CLIENTES ══════════════════════════════════════════════
+async function renderCli(){
+  $('content').innerHTML='<div class="ld">Carregando…</div>';
+  let rows=await getAll('clientes');
+  if(search) rows=rows.filter(c=>(c.nome+c.cpfcnpj+c.email+c.telefone+c.cidade).toLowerCase().includes(search));
+  rows.sort((a,b)=>(a.nome||'').localeCompare(b.nome||''));
+  $('content').innerHTML=`
+  <div class="tc">
+    <div class="th"><h3>Clientes <span style="font-size:12px;color:var(--text3);font-family:'DM Sans'">${rows.length}</span></h3>
+      <button class="btn btn-gold btn-sm" onclick="openCliModal()">+ Novo Cliente</button></div>
+    ${rows.length===0?'<div class="empty"><div class="ei">◉</div><p>Nenhum cliente.</p></div>':`
+    <table><thead><tr><th>Nome</th><th>CPF/CNPJ</th><th>Contato</th><th>Cidade</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+    ${rows.map(c=>`<tr>
+      <td><strong>${hl(c.nome,search)}</strong>${c.obs?`<div class="tsm ts">${esc(c.obs).substring(0,40)}</div>`:''}</td>
+      <td class="ts">${hl(c.cpfcnpj,search)||'—'}</td>
+      <td>${esc(c.email)||'—'}<div class="tsm ts">${esc(c.telefone)||''}</div></td>
+      <td class="ts">${esc(c.cidade)||'—'}${c.uf?' / '+esc(c.uf):''}</td>
+      <td><span class="bx b-${c.status||'ativo'}">${c.status||'ativo'}</span></td>
+      <td><div class="tda"><button class="btn btn-out btn-sm" onclick="openCliModal('${c.id}')">✎ Editar</button><button class="btn btn-del btn-sm" onclick="delCli('${c.id}')">✕</button></div></td>
+    </tr>`).join('')}</tbody></table>`}
+  </div>`;
+}
+
+window.openCliModal=async function(id=null){
+  let c={status:'ativo'}; if(id) c=await getOne('clientes',id)||c;
+  openModal(`
+  <div class="mh"><h3>${id?'Editar':'Novo'} Cliente</h3><button class="xb" onclick="closeModal()">×</button></div>
+  <div class="mbd">
+    <div class="fr"><div class="fg"><label>Nome completo *</label><input id="c-n" value="${esc(c.nome||'')}"></div><div class="fg"><label>CPF / CNPJ</label><input id="c-c" value="${esc(c.cpfcnpj||'')}"></div></div>
+    <div class="fr"><div class="fg"><label>E-mail</label><input id="c-e" type="email" value="${esc(c.email||'')}"></div><div class="fg"><label>Telefone</label><input id="c-t" value="${esc(c.telefone||'')}"></div></div>
+    <div class="fr tri"><div class="fg"><label>Cidade</label><input id="c-ci" value="${esc(c.cidade||'')}"></div><div class="fg"><label>UF</label><input id="c-u" maxlength="2" value="${esc(c.uf||'')}"></div><div class="fg"><label>Status</label><select id="c-s"><option value="ativo" ${c.status==='ativo'?'selected':''}>Ativo</option><option value="inativo" ${c.status==='inativo'?'selected':''}>Inativo</option></select></div></div>
+    <div class="fr one"><div class="fg"><label>Endereço</label><input id="c-en" value="${esc(c.endereco||'')}"></div></div>
+    <div class="fr one"><div class="fg"><label>Observações</label><textarea id="c-o">${esc(c.obs||'')}</textarea></div></div>
+  </div>
+  <div class="mf"><button class="btn btn-out" onclick="closeModal()">Cancelar</button><button class="btn btn-gold" onclick="saveCli('${id||''}')">💾 Salvar</button></div>`);
+};
+
+window.saveCli=async function(id){
+  const nome=$('c-n').value.trim(); if(!nome){toast('Informe o nome','err');return;}
+  const d={nome,cpfcnpj:$('c-c').value.trim(),email:$('c-e').value.trim(),telefone:$('c-t').value.trim(),cidade:$('c-ci').value.trim(),uf:$('c-u').value.trim().toUpperCase(),endereco:$('c-en').value.trim(),status:$('c-s').value,obs:$('c-o').value.trim(),_ts:Date.now()};
+  if(id){await updItem('clientes',id,d);toast('Cliente atualizado');}else{await addItem('clientes',d);toast('Cliente cadastrado');}
+  closeModal(); renderCli();
+};
+window.delCli=async function(id){ if(!confirm('Excluir cliente?'))return; await delItem('clientes',id); toast('Excluído','info'); renderCli(); };
+
+// ══ PROCESSOS ═════════════════════════════════════════════
+async function renderProc(){
+  $('content').innerHTML='<div class="ld">Carregando…</div>';
+  let [rows,cli]=await Promise.all([getAll('processos'),getAll('clientes')]);
+  const cMap={}; cli.forEach(c=>cMap[c.id]=c.nome);
+  if(search) rows=rows.filter(p=>(p.numero+p.parte+p.vara+p.assunto+(cMap[p.clienteId]||'')).toLowerCase().includes(search));
+  rows.sort((a,b)=>(b._ts||0)-(a._ts||0));
+  $('content').innerHTML=`
+  <div class="tc">
+    <div class="th"><h3>Processos <span style="font-size:12px;color:var(--text3);font-family:'DM Sans'">${rows.length}</span></h3>
+      <button class="btn btn-gold btn-sm" onclick="openProcModal()">+ Novo Processo</button></div>
+    ${rows.length===0?'<div class="empty"><div class="ei">◎</div><p>Nenhum processo.</p></div>':`
+    <table><thead><tr><th>Número</th><th>Parte / Assunto</th><th>Área</th><th>Vara</th><th>Cliente</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+    ${rows.map(p=>`<tr>
+      <td style="font-family:'DM Sans';font-size:12px"><strong>${hl(p.numero,search)||'—'}</strong></td>
+      <td>${hl(p.parte,search)||'—'}<div class="tsm ts">${esc(p.assunto)||''}</div></td>
+      <td><span class="bx b-${p.area||'civel'}">${p.area||'cível'}</span></td>
+      <td class="ts tsm">${esc(p.vara)||'—'}</td>
+      <td class="ts">${hl(cMap[p.clienteId]||'—',search)}</td>
+      <td><span class="bx b-${p.status||'andamento'}">${p.status||'andamento'}</span></td>
+      <td><div class="tda"><button class="btn btn-out btn-sm" onclick="openProcModal('${p.id}')">✎ Editar</button><button class="btn btn-del btn-sm" onclick="delProc('${p.id}')">✕</button></div></td>
+    </tr>`).join('')}</tbody></table>`}
+  </div>`;
+}
+
+window.openProcModal=async function(id=null){
+  const cli=await getAll('clientes');
+  let p={status:'andamento',area:'civel'}; if(id) p=await getOne('processos',id)||p;
+  const areas=['civel','criminal','trabalhista','previdenciario','administrativo','tributario','consumidor'];
+  const aOpts=areas.map(a=>`<option value="${a}" ${p.area===a?'selected':''}>${a}</option>`).join('');
+  const cOpts=cli.map(c=>`<option value="${c.id}" ${p.clienteId===c.id?'selected':''}>${esc(c.nome)}</option>`).join('');
+  openModal(`
+  <div class="mh"><h3>${id?'Editar':'Novo'} Processo</h3><button class="xb" onclick="closeModal()">×</button></div>
+  <div class="mbd">
+    <div class="fr"><div class="fg"><label>Nº do Processo</label><input id="p-n" value="${esc(p.numero||'')}"></div><div class="fg"><label>Área *</label><select id="p-a">${aOpts}</select></div></div>
+    <div class="fr one"><div class="fg"><label>Parte (Autor / Réu)</label><input id="p-pt" value="${esc(p.parte||'')}"></div></div>
+    <div class="fr one"><div class="fg"><label>Assunto / Pedido</label><input id="p-as" value="${esc(p.assunto||'')}"></div></div>
+    <div class="fr"><div class="fg"><label>Vara / Juízo</label><input id="p-v" value="${esc(p.vara||'')}"></div><div class="fg"><label>Comarca / UF</label><input id="p-co" value="${esc(p.comarca||'')}"></div></div>
+    <div class="fr"><div class="fg"><label>Cliente *</label><select id="p-cl"><option value="">-- selecione --</option>${cOpts}</select></div><div class="fg"><label>Status</label><select id="p-s"><option value="andamento" ${p.status==='andamento'?'selected':''}>Em andamento</option><option value="concluido" ${p.status==='concluido'?'selected':''}>Concluído</option><option value="arquivado" ${p.status==='arquivado'?'selected':''}>Arquivado</option></select></div></div>
+    <div class="fr"><div class="fg"><label>Distribuição</label><input type="date" id="p-d" value="${esc(p.distribuicao||'')}"></div><div class="fg"><label>Valor da causa (R$)</label><input id="p-vc" type="number" value="${p.valorCausa||''}"></div></div>
+    <div class="fr one"><div class="fg"><label>Observações</label><textarea id="p-o">${esc(p.obs||'')}</textarea></div></div>
+  </div>
+  <div class="mf"><button class="btn btn-out" onclick="closeModal()">Cancelar</button><button class="btn btn-gold" onclick="saveProc('${id||''}')">💾 Salvar</button></div>`);
+};
+
+window.saveProc=async function(id){
+  const cId=$('p-cl').value; if(!cId){toast('Selecione o cliente','err');return;}
+  const d={numero:$('p-n').value.trim(),area:$('p-a').value,parte:$('p-pt').value.trim(),assunto:$('p-as').value.trim(),vara:$('p-v').value.trim(),comarca:$('p-co').value.trim(),clienteId:cId,status:$('p-s').value,distribuicao:$('p-d').value,valorCausa:parseFloat($('p-vc').value)||0,obs:$('p-o').value.trim(),_ts:Date.now()};
+  if(id){await updItem('processos',id,d);toast('Processo atualizado');}else{await addItem('processos',d);toast('Processo cadastrado');}
+  closeModal(); renderProc();
+};
+window.delProc=async function(id){ if(!confirm('Excluir processo?'))return; await delItem('processos',id); toast('Excluído','info'); renderProc(); };
+
+// ══ PRAZOS ════════════════════════════════════════════════
+async function renderPrazos(){
+  $('content').innerHTML='<div class="ld">Carregando…</div>';
+  let [rows,proc]=await Promise.all([getAll('prazos'),getAll('processos')]);
+  const pMap={}; proc.forEach(p=>pMap[p.id]=p.numero||p.parte||`Proc.${p.id}`);
+  const hj=new Date(); hj.setHours(0,0,0,0);
+  if(search) rows=rows.filter(r=>(r.descricao+(pMap[r.processoId]||'')+r.tipo).toLowerCase().includes(search));
+  rows.sort((a,b)=>a.data<b.data?-1:1);
+  $('content').innerHTML=`
+  <div class="tc">
+    <div class="th"><h3>Prazos & Tarefas <span style="font-size:12px;color:var(--text3);font-family:'DM Sans'">${rows.length}</span></h3>
+      <button class="btn btn-gold btn-sm" onclick="openPrazoModal()">+ Novo Prazo</button></div>
+    ${rows.length===0?'<div class="empty"><div class="ei">◷</div><p>Nenhum prazo.</p></div>':`
+    <table><thead><tr><th>Descrição</th><th>Processo</th><th>Tipo</th><th>Data</th><th>Dias</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+    ${rows.map(r=>{
+      const diff=Math.ceil((new Date(r.data+'T00:00:00')-hj)/86400000);
+      const cor=r.status==='concluido'?'var(--text3)':diff<0?'var(--danger)':diff<=3?'var(--warn)':diff<=7?'#7ab8f5':'var(--success)';
+      const dl=r.status==='concluido'?'Feito':diff<0?`−${Math.abs(diff)}d`:diff===0?'Hoje':diff===1?'Amanhã':`+${diff}d`;
+      return `<tr>
+        <td>${hl(r.descricao,search)}</td>
+        <td class="ts tsm">${pMap[r.processoId]||'—'}</td>
+        <td><span class="bx" style="background:rgba(76,143,224,.12);color:#7ab8f5">${r.tipo||'prazo'}</span></td>
+        <td class="ts">${fmtD(r.data)}</td>
+        <td style="color:${cor};font-weight:500">${dl}</td>
+        <td><span class="bx b-${r.status||'pendente'}">${r.status||'pendente'}</span></td>
+        <td><div class="tda">
+          ${r.status!=='concluido'?`<button class="btn btn-ok btn-sm" onclick="concluirPrazo('${r.id}')">✓</button>`:''}
+          <button class="btn btn-out btn-sm" onclick="openPrazoModal('${r.id}')">✎</button>
+          <button class="btn btn-del btn-sm" onclick="delPrazo('${r.id}')">✕</button>
+        </div></td>
+      </tr>`;
+    }).join('')}</tbody></table>`}
+  </div>`;
+}
+
+window.openPrazoModal=async function(id=null){
+  const proc=await getAll('processos');
+  let r={status:'pendente',tipo:'prazo',data:tod()}; if(id) r=await getOne('prazos',id)||r;
+  const pOpts=proc.map(p=>`<option value="${p.id}" ${r.processoId===p.id?'selected':''}>${esc(p.numero||p.parte||`Proc.${p.id}`)}</option>`).join('');
+  openModal(`
+  <div class="mh"><h3>${id?'Editar':'Novo'} Prazo</h3><button class="xb" onclick="closeModal()">×</button></div>
+  <div class="mbd">
+    <div class="fr one"><div class="fg"><label>Descrição *</label><input id="r-d" value="${esc(r.descricao||'')}"></div></div>
+    <div class="fr"><div class="fg"><label>Processo</label><select id="r-p"><option value="">-- nenhum --</option>${pOpts}</select></div><div class="fg"><label>Tipo</label><select id="r-t"><option value="prazo" ${r.tipo==='prazo'?'selected':''}>Prazo processual</option><option value="audiencia" ${r.tipo==='audiencia'?'selected':''}>Audiência</option><option value="tarefa" ${r.tipo==='tarefa'?'selected':''}>Tarefa</option><option value="reuniao" ${r.tipo==='reuniao'?'selected':''}>Reunião</option><option value="pericia" ${r.tipo==='pericia'?'selected':''}>Perícia</option></select></div></div>
+    <div class="fr"><div class="fg"><label>Data *</label><input type="date" id="r-dt" value="${r.data||tod()}"></div><div class="fg"><label>Status</label><select id="r-s"><option value="pendente" ${r.status==='pendente'?'selected':''}>Pendente</option><option value="concluido" ${r.status==='concluido'?'selected':''}>Concluído</option></select></div></div>
+    <div class="fr one"><div class="fg"><label>Observações</label><textarea id="r-o">${esc(r.obs||'')}</textarea></div></div>
+  </div>
+  <div class="mf"><button class="btn btn-out" onclick="closeModal()">Cancelar</button><button class="btn btn-gold" onclick="savePrazo('${id||''}')">💾 Salvar</button></div>`);
+};
+
+window.savePrazo=async function(id){
+  const desc=$('r-d').value.trim(); if(!desc){toast('Informe a descrição','err');return;}
+  const d={descricao:desc,processoId:$('r-p').value||null,tipo:$('r-t').value,data:$('r-dt').value,status:$('r-s').value,obs:$('r-o').value.trim(),_ts:Date.now()};
+  if(id){await updItem('prazos',id,d);toast('Prazo atualizado');}else{await addItem('prazos',d);toast('Prazo cadastrado');}
+  closeModal(); renderPrazos();
+};
+window.concluirPrazo=async function(id){ await updItem('prazos',id,{status:'concluido'}); toast('Prazo concluído ✓'); renderPrazos(); };
+window.delPrazo=async function(id){ if(!confirm('Excluir prazo?'))return; await delItem('prazos',id); toast('Excluído','info'); renderPrazos(); };
+
+// ══ FINANCEIRO ════════════════════════════════════════════
+async function renderFin(){
+  $('content').innerHTML='<div class="ld">Carregando…</div>';
+  let [rows,cli]=await Promise.all([getAll('financeiro'),getAll('clientes')]);
+  const cMap={}; cli.forEach(c=>cMap[c.id]=c.nome);
+  if(search) rows=rows.filter(f=>(f.descricao+(cMap[f.clienteId]||'')+f.tipo).toLowerCase().includes(search));
+  rows.sort((a,b)=>(b._ts||0)-(a._ts||0));
+  const tP=rows.filter(f=>f.status==='pago').reduce((s,f)=>s+(parseFloat(f.valor)||0),0);
+  const tA=rows.filter(f=>f.status==='aberto').reduce((s,f)=>s+(parseFloat(f.valor)||0),0);
+  const tV=rows.filter(f=>f.status==='vencido').reduce((s,f)=>s+(parseFloat(f.valor)||0),0);
+  $('content').innerHTML=`
+  <div class="sg" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px">
+    <div class="sc"><div class="lb">Recebido</div><div class="vl" style="color:var(--success)">${fmt(tP)}</div></div>
+    <div class="sc"><div class="lb">A Receber</div><div class="vl" style="color:var(--warn)">${fmt(tA)}</div></div>
+    <div class="sc"><div class="lb">Vencido</div><div class="vl" style="color:var(--danger)">${fmt(tV)}</div></div>
+  </div>
+  <div class="tc">
+    <div class="th"><h3>Lançamentos <span style="font-size:12px;color:var(--text3);font-family:'DM Sans'">${rows.length}</span></h3>
+      <button class="btn btn-gold btn-sm" onclick="openFinModal()">+ Novo Lançamento</button></div>
+    ${rows.length===0?'<div class="empty"><div class="ei">◈</div><p>Nenhum lançamento.</p></div>':`
+    <table><thead><tr><th>Descrição</th><th>Cliente</th><th>Tipo</th><th>Vencimento</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+    ${rows.map(f=>`<tr>
+      <td>${hl(f.descricao,search)}</td>
+      <td class="ts">${hl(cMap[f.clienteId]||'—',search)}</td>
+      <td class="ts tsm">${f.tipo||'honorário'}</td>
+      <td class="ts">${fmtD(f.vencimento)||'—'}</td>
+      <td style="font-weight:500;color:${f.status==='pago'?'var(--success)':f.status==='vencido'?'var(--danger)':'var(--warn)'}">${fmt(f.valor)}</td>
+      <td><span class="bx b-${f.status||'aberto'}">${f.status||'aberto'}</span></td>
+      <td><div class="tda">
+        ${f.status!=='pago'?`<button class="btn btn-ok btn-sm" onclick="marcarPago('${f.id}')">✓ Pago</button>`:''}
+        <button class="btn btn-out btn-sm" onclick="openFinModal('${f.id}')">✎</button>
+        <button class="btn btn-del btn-sm" onclick="delFin('${f.id}')">✕</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table>`}
+  </div>`;
+}
+
+window.openFinModal=async function(id=null){
+  const cli=await getAll('clientes');
+  let f={status:'aberto',tipo:'honorário',vencimento:tod()}; if(id) f=await getOne('financeiro',id)||f;
+  const cOpts=cli.map(c=>`<option value="${c.id}" ${f.clienteId===c.id?'selected':''}>${esc(c.nome)}</option>`).join('');
+  openModal(`
+  <div class="mh"><h3>${id?'Editar':'Novo'} Lançamento</h3><button class="xb" onclick="closeModal()">×</button></div>
+  <div class="mbd">
+    <div class="fr one"><div class="fg"><label>Descrição *</label><input id="f-d" value="${esc(f.descricao||'')}"></div></div>
+    <div class="fr"><div class="fg"><label>Cliente *</label><select id="f-cl"><option value="">-- selecione --</option>${cOpts}</select></div><div class="fg"><label>Tipo</label><select id="f-t"><option value="honorário" ${f.tipo==='honorário'?'selected':''}>Honorário</option><option value="êxito" ${f.tipo==='êxito'?'selected':''}>Honorário de êxito</option><option value="mensalidade" ${f.tipo==='mensalidade'?'selected':''}>Mensalidade</option><option value="custas" ${f.tipo==='custas'?'selected':''}>Custas</option><option value="despesa" ${f.tipo==='despesa'?'selected':''}>Despesa</option></select></div></div>
+    <div class="fr tri"><div class="fg"><label>Valor (R$) *</label><input id="f-v" type="number" step="0.01" value="${f.valor||''}"></div><div class="fg"><label>Vencimento</label><input type="date" id="f-vc" value="${f.vencimento||tod()}"></div><div class="fg"><label>Status</label><select id="f-s"><option value="aberto" ${f.status==='aberto'?'selected':''}>Aberto</option><option value="pago" ${f.status==='pago'?'selected':''}>Pago</option><option value="vencido" ${f.status==='vencido'?'selected':''}>Vencido</option></select></div></div>
+    <div class="fr one"><div class="fg"><label>Data de pagamento</label><input type="date" id="f-pg" value="${f.dataPagamento||''}"></div></div>
+    <div class="fr one"><div class="fg"><label>Observações</label><textarea id="f-o">${esc(f.obs||'')}</textarea></div></div>
+  </div>
+  <div class="mf"><button class="btn btn-out" onclick="closeModal()">Cancelar</button><button class="btn btn-gold" onclick="saveFin('${id||''}')">💾 Salvar</button></div>`);
+};
+
+window.saveFin=async function(id){
+  const desc=$('f-d').value.trim(), cId=$('f-cl').value, val=parseFloat($('f-v').value);
+  if(!desc||!cId||!val){toast('Preencha descrição, cliente e valor','err');return;}
+  const d={descricao:desc,clienteId:cId,tipo:$('f-t').value,valor:val,vencimento:$('f-vc').value,status:$('f-s').value,dataPagamento:$('f-pg').value||null,obs:$('f-o').value.trim(),_ts:Date.now()};
+  if(id){await updItem('financeiro',id,d);toast('Lançamento atualizado');}else{await addItem('financeiro',d);toast('Lançamento cadastrado');}
+  closeModal(); renderFin();
+};
+window.marcarPago=async function(id){ await updItem('financeiro',id,{status:'pago',dataPagamento:tod()}); toast('Marcado como pago ✓'); renderFin(); };
+window.delFin=async function(id){ if(!confirm('Excluir lançamento?'))return; await delItem('financeiro',id); toast('Excluído','info'); renderFin(); };
+
+// ══ AGENDA ════════════════════════════════════════════════
+async function renderAg(){
+  $('content').innerHTML='<div class="ld">Carregando…</div>';
+  const [evts,praz]=await Promise.all([getAll('agenda'),getAll('prazos')]);
+  const yr=agMon.getFullYear(), mo=agMon.getMonth();
+  const first=new Date(yr,mo,1), last=new Date(yr,mo+1,0);
+  const dow=first.getDay();
+  const hj=new Date(); hj.setHours(0,0,0,0);
+  const eMap={};
+  evts.forEach(e=>{ if(!eMap[e.data])eMap[e.data]=[]; eMap[e.data].push({...e,_k:e.tipo||'evento'}); });
+  praz.filter(p=>p.status!=='concluido').forEach(p=>{ if(!eMap[p.data])eMap[p.data]=[]; eMap[p.data].push({...p,_k:'prazo'}); });
+  const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let cells='';
+  for(let i=0;i<dow;i++) cells+=`<div class="ag-cell om"></div>`;
+  for(let d=1;d<=last.getDate();d++){
+    const dt=`${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isT=new Date(yr,mo,d).getTime()===hj.getTime();
+    const evs=eMap[dt]||[];
+    const evHtml=evs.slice(0,3).map(e=>{
+      const cls=e._k==='prazo'?'ep':e._k==='audiencia'?'ea':e._k==='reuniao'?'er':'';
+      return `<div class="ag-ev ${cls}" title="${esc(e.descricao||e.titulo)}">${esc((e.descricao||e.titulo||'').substring(0,20))}</div>`;
+    }).join('');
+    cells+=`<div class="ag-cell${isT?' today':''}" onclick="openAgModal(null,'${dt}')"><div class="dn">${d}</div>${evHtml}${evs.length>3?`<div style="font-size:9px;color:var(--text3)">+${evs.length-3}</div>`:''}</div>`;
+  }
+  const rem=(7-(dow+last.getDate())%7)%7;
+  for(let i=0;i<rem;i++) cells+=`<div class="ag-cell om"></div>`;
+  $('content').innerHTML=`
+  <div class="mnav">
+    <button class="btn btn-out btn-sm" onclick="agNav(-1)">← Anterior</button>
+    <h3>${meses[mo]} ${yr}</h3>
+    <button class="btn btn-out btn-sm" onclick="agNav(1)">Próximo →</button>
+    <button class="btn btn-gold btn-sm" onclick="openAgModal()">+ Evento</button>
+  </div>
+  <div class="wk">${dias.map(d=>`<span>${d}</span>`).join('')}</div>
+  <div class="ag-grid">${cells}</div>`;
+}
+
+window.agNav=function(dir){ agMon.setMonth(agMon.getMonth()+dir); renderAg(); };
+
+window.openAgModal=async function(id=null,dataPre=null){
+  let e={tipo:'reuniao',data:dataPre||tod()}; if(id) e=await getOne('agenda',id)||e;
+  openModal(`
+  <div class="mh"><h3>${id?'Editar':'Novo'} Evento</h3><button class="xb" onclick="closeModal()">×</button></div>
+  <div class="mbd">
+    <div class="fr one"><div class="fg"><label>Título *</label><input id="e-t" value="${esc(e.titulo||e.descricao||'')}"></div></div>
+    <div class="fr"><div class="fg"><label>Tipo</label><select id="e-tp"><option value="reuniao" ${e.tipo==='reuniao'?'selected':''}>Reunião</option><option value="audiencia" ${e.tipo==='audiencia'?'selected':''}>Audiência</option><option value="pericia" ${e.tipo==='pericia'?'selected':''}>Perícia</option><option value="evento" ${e.tipo==='evento'?'selected':''}>Evento</option></select></div><div class="fg"><label>Data *</label><input type="date" id="e-d" value="${e.data||tod()}"></div></div>
+    <div class="fr"><div class="fg"><label>Horário</label><input type="time" id="e-h" value="${e.hora||''}"></div><div class="fg"><label>Local</label><input id="e-l" value="${esc(e.local||'')}"></div></div>
+    <div class="fr one"><div class="fg"><label>Observações</label><textarea id="e-o">${esc(e.obs||'')}</textarea></div></div>
+  </div>
+  <div class="mf">${id?`<button class="btn btn-del" onclick="delEvt('${id}')">Excluir</button>`:''}<button class="btn btn-out" onclick="closeModal()">Cancelar</button><button class="btn btn-gold" onclick="saveEvt('${id||''}')">💾 Salvar</button></div>`);
+};
+
+window.saveEvt=async function(id){
+  const titulo=$('e-t').value.trim(); if(!titulo){toast('Informe o título','err');return;}
+  const d={titulo,tipo:$('e-tp').value,data:$('e-d').value,hora:$('e-h').value,local:$('e-l').value.trim(),obs:$('e-o').value.trim(),_ts:Date.now()};
+  if(id){await updItem('agenda',id,d);toast('Evento atualizado');}else{await addItem('agenda',d);toast('Evento cadastrado');}
+  closeModal(); renderAg();
+};
+window.delEvt=async function(id){ if(!confirm('Excluir evento?'))return; await delItem('agenda',id); toast('Excluído','info'); closeModal(); renderAg(); };
+
+// ── INIT ─────────────────────────────────────────────────
+(async()=>{
+  const ok=await initFB();
+  if(!ok) return;
+  $('setup').style.display='none';
+  $('sidebar').style.display='flex';
+  $('main').style.display='flex';
+  render();
+})();
+</script>
+</body>
+</html>
