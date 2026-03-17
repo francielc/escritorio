@@ -172,15 +172,18 @@ tr:hover td{background:rgba(201,168,76,.03)}
     → "Publish".</div>
 
     <div class="step-card"><strong>4. Obtenha as credenciais</strong><br>
-    ⚙ Configurações do projeto → aba "Geral" → "Seus apps" → ícone <strong>&lt;/&gt;</strong> → "Registrar app" → copie os valores do <code>firebaseConfig</code>.</div>
+    ⚙ Configurações do projeto → aba "Geral" → "Seus apps" → ícone <strong>&lt;/&gt;</strong> → "Registrar app" → copie o bloco <code>const firebaseConfig = { … }</code> e cole abaixo.</div>
 
-    <div class="cfg-fields">
-      <input id="cf-key" placeholder="apiKey  — AIzaSy..." />
-      <input id="cf-dom" placeholder="authDomain  — meu-projeto.firebaseapp.com" />
-      <input id="cf-pid" placeholder="projectId  — meu-projeto-12345" />
-      <input id="cf-app" placeholder="appId  — 1:123456789:web:abc..." />
-    </div>
-    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px 0;font-size:14px" onclick="saveConfig()">Conectar ao Firebase →</button>
+    <div style="margin:18px 0 6px;font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px">Cole o firebaseConfig aqui:</div>
+    <textarea id="cf-paste" rows="9" style="width:100%;background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--gold2);font-family:monospace;font-size:12.5px;outline:none;resize:vertical;line-height:1.6" placeholder="const firebaseConfig = {
+  apiKey: &quot;AIzaSy...&quot;,
+  authDomain: &quot;meu-projeto.firebaseapp.com&quot;,
+  projectId: &quot;meu-projeto-12345&quot;,
+  storageBucket: &quot;...&quot;,
+  messagingSenderId: &quot;...&quot;,
+  appId: &quot;1:123...&quot;
+};"></textarea>
+    <button class="btn btn-gold" style="width:100%;justify-content:center;padding:12px 0;font-size:14px;margin-top:12px" onclick="saveConfig()">Conectar ao Firebase →</button>
     <p style="text-align:center;margin-top:10px;font-size:11.5px;color:var(--text3)">Credenciais salvas localmente no navegador.</p>
   </div>
 </div>
@@ -235,8 +238,19 @@ let DB;
 function getCfg(){ try{ return JSON.parse(localStorage.getItem('adv_fb')); }catch{ return null; } }
 
 window.saveConfig = function(){
-  const cfg={ apiKey:$('cf-key').value.trim(), authDomain:$('cf-dom').value.trim(), projectId:$('cf-pid').value.trim(), appId:$('cf-app').value.trim() };
-  if(!cfg.apiKey||!cfg.projectId||!cfg.authDomain){ toast('Preencha pelo menos apiKey, authDomain e projectId','err'); return; }
+  const raw = document.getElementById('cf-paste').value.trim();
+  if(!raw){ toast('Cole o firebaseConfig antes de conectar','err'); return; }
+  const match = raw.match(/\{[\s\S]*\}/);
+  if(!match){ toast('Formato inválido — cole o bloco completo do firebaseConfig','err'); return; }
+  let jsonStr = match[0]
+    .replace(/\/\/.*$/gm, '')
+    .replace(/,\s*([}\]])/g, '$1')
+    .replace(/([{,]\s*)([a-zA-Z_]\w*)\s*:/g, '$1"$2":')
+    .replace(/:\s*'([^']*)'/g, ':"$1"');
+  let cfg;
+  try{ cfg = JSON.parse(jsonStr); }
+  catch(e){ toast('Não foi possível ler o firebaseConfig — verifique o texto colado','err'); console.error(e); return; }
+  if(!cfg.apiKey||!cfg.projectId||!cfg.authDomain){ toast('apiKey, authDomain ou projectId ausentes','err'); return; }
   localStorage.setItem('adv_fb', JSON.stringify(cfg));
   location.reload();
 };
